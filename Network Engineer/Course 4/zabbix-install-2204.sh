@@ -34,8 +34,8 @@ mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "FLUSH PRIVILEGES;"
 # Install Zabbix repository configuration package
 #sudo apt install -y wget
 echo "Adding the Zabbix Repo"
-wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2+ubuntu22.04_all.deb
-dpkg -i zabbix-release_7.0-2+ubuntu22.04_all.deb
+wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest+ubuntu22.04_all.deb
+dpkg -i zabbix-release_latest+ubuntu22.04_all.deb
 apt update
 
 # Install Zabbix server, frontend, agent
