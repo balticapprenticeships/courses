@@ -34,8 +34,8 @@ mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "FLUSH PRIVILEGES;"
 # Install Zabbix repository configuration package
 #sudo apt install -y wget
 echo "Adding the Zabbix Repo"
-wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest+ubuntu22.04_all.deb
-dpkg -i zabbix-release_latest+ubuntu22.04_all.deb
+wget https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu22.04_all.deb
+dpkg -i zabbix-release_latest_7.4+ubuntu22.04_all.deb
 apt update
 
 # Install Zabbix server, frontend, agent
@@ -44,17 +44,20 @@ apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix
 
 # Create Zabbix database
 echo "Creating the Zabbix database and user"
-mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE zabbix character set utf8 collate utf8_bin;"
+mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE zabbix character set utf8mb4 collate utf8mb4_bin;"
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE USER zabbix@localhost IDENTIFIED BY 'Zabbixpswd1#';"
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON zabbix.* TO zabbix@localhost WITH GRANT OPTION;"
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "SET GLOBAL log_bin_trust_function_creators = 1;"
+mysql quit;
 
 # Import initial schema and data
 ## Set Zabbix MySQL password
 echo "Importing the Zabbix schema this will take a couple of mins."
 ZABBIX_MYSQL_PASSWORD="Zabbixpswd1#"
-zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p$ZABBIX_MYSQL_PASSWORD zabbix
+#zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p$ZABBIX_MYSQL_PASSWORD zabbix
+zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p$ZABBIX_MYSQL_PASSWORD zabbix
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "SET GLOBAL log_bin_trust_function_creators = 0;"
+mysql quit;
 
 # Configure Zabbix server
 echo "Configuting the Zabbis server"
