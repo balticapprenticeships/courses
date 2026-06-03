@@ -48,7 +48,6 @@ mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE zabbix character set utf
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE USER zabbix@localhost IDENTIFIED BY 'Zabbixpswd1#';"
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON zabbix.* TO zabbix@localhost WITH GRANT OPTION;"
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "SET GLOBAL log_bin_trust_function_creators = 1;"
-mysql quit;
 
 # Import initial schema and data
 ## Set Zabbix MySQL password
@@ -57,7 +56,6 @@ ZABBIX_MYSQL_PASSWORD="Zabbixpswd1#"
 #zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p$ZABBIX_MYSQL_PASSWORD zabbix
 zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p$ZABBIX_MYSQL_PASSWORD zabbix
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "SET GLOBAL log_bin_trust_function_creators = 0;"
-mysql quit;
 
 # Configure Zabbix server
 echo "Configuting the Zabbis server"
